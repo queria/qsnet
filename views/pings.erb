@@ -1,0 +1,7 @@
+
+<h2>Pings</h2>
+<% @hosts.each do |ip| %>
+  <h3><%= ip %></h3>
+  <pre><%= `ping -c 1 #{ip}` %></pre>
+<% end %>
+

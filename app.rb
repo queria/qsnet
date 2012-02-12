@@ -10,7 +10,13 @@ get '' do
   erb :index
 end
 
-get '/about' do
-  erb :about
+get '/status' do
+  erb :status
 end
+
+get '/pings' do
+  @hosts = ['nix.cz', '192.168.100.50', '192.168.102.1']
+  erb :pings
+end
+
 
