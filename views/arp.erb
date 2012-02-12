@@ -1,0 +1,22 @@
+<h2>ARP history</h2>
+
+<table>
+  <tr>
+    <th>IP</th>
+    <th>MAC@time</th>
+  </tr>
+  <% @arp_table.each do |ip,macs| %>
+    <tr>
+      <td><%= ip %></td>
+      <td>
+        <% macs.each do |entry| %>
+          <%= entry['mac'] %> seen last at <%= entry['seen_at'] %><br />
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<pre>
+<%= @arp_table %>
+</pre>

@@ -92,7 +92,7 @@ end
 
 if __FILE__ == $0
 
-  config = YAML.load_file('fetch_config.yaml')
+  config = YAML.load_file(File.dirname(__FILE__)+'/fetch_config.yaml')
 
   db = Mysql::new(
     config['db']['host'],
