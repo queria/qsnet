@@ -1,0 +1,58 @@
+== QSNet
+Jednoduche nastroje a webove rozhrani pro zprijemneni kontroly male/domaci site.
+
+Umoznuje:
+* ping preddefinovanych IP adres
+* "dohled" nad arp tabulkou zarizeni s RouterOS
+
+Planovano:
+* pocitani a zobrazeni informaci o trafficu dle accounting zaznamu z RouterOS
+
+== Zprovozneni
+=== Zprovozneni ziskavani dat
+* pripravte DB pro qsnet (prozatim podporavana MySQL)
+* naimportujte strukturu tabulek (mysql -p -u $dbuser $dbname INSTALL/fetch.struct.sql)
+* zkopirujte ukazkovy soubor s nastavenim (cp INSTALL/fetch_config.yaml ./)
+* upravte si soubor s nastevim aby odpovidalo Vasemu prostredi (db, ip adresy ...)
+* nyni muzete spoustet fetch_*.rb skripty pro ziskani dat
+** doporucuji umistit do cronu pro automatizaci ;]
+=== Zprovozneni weboveho rozhrani
+* teoreticky zatim staci "ruby app.rb" (nahodi vlastni webserver)
+* ja pouzivam integraci s Apache + Passenger
+** ln -s /usr/local/rubyapps/qsnet/public /home/www/example.org/qsnet
+** do VirtualHostu pro "example.org" pridat "RackBaseURI /qsnet"
+** po restartu by aplikace mela byt na url http://example.org/qsnet
+** pokud chcete primo na subdomene, nasmerujte jeji DocumentRoot do /public
+** pripadne viz google: sinatra apache passenger
+
+== Autor(i)
+* Zalozil Queria Sa-Tas <public@sa-tas.net> ~2012
+
+== Licence
+Pro qsnet a vsechny jeho soucasti plati upravena/3-bodova BSD licence.
+
+Copyright (c) 2012, Queria Sa-Tas
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+* Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+* Neither the name of the Queria Sa-Tas nor the
+names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL QUERIA SA-TAS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING INCLUDING ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
