@@ -1,3 +1,4 @@
+
 == QSNet
 Jednoduche nastroje a webove rozhrani pro zprijemneni kontroly male/domaci site.
 
@@ -8,15 +9,31 @@ Umoznuje:
 Planovano:
 * pocitani a zobrazeni informaci o trafficu dle accounting zaznamu z RouterOS
 
+
+
 == Zprovozneni
+
+=== Pozadavky
+
+* potrebujete ruby (vyvijeno na 1.9.2 ale melo by fungovat minimalne 1.8 ...)
+* potrebujete gemy sinatra a mysql
+* pokud pouzivate rvm muzete si zalozit novy gemset
+** pokud neznate rvm pak se na nej aspon podivejte
+* pro nahozeni zavislosti muzete pouzit
+** bundle install
+** (na to potrebujete ruby a bundler [gem install bundler])
+
 === Zprovozneni ziskavani dat
+
 * pripravte DB pro qsnet (prozatim podporavana MySQL)
 * naimportujte strukturu tabulek (mysql -p -u $dbuser $dbname INSTALL/fetch.struct.sql)
 * zkopirujte ukazkovy soubor s nastavenim (cp INSTALL/fetch_config.yaml ./)
 * upravte si soubor s nastevim aby odpovidalo Vasemu prostredi (db, ip adresy ...)
 * nyni muzete spoustet fetch_*.rb skripty pro ziskani dat
 ** doporucuji umistit do cronu pro automatizaci ;]
+
 === Zprovozneni weboveho rozhrani
+
 * teoreticky zatim staci "ruby app.rb" (nahodi vlastni webserver)
 * ja pouzivam integraci s Apache + Passenger
 ** ln -s /usr/local/rubyapps/qsnet/public /home/www/example.org/qsnet
@@ -25,10 +42,16 @@ Planovano:
 ** pokud chcete primo na subdomene, nasmerujte jeji DocumentRoot do /public
 ** pripadne viz google: sinatra apache passenger
 
+
+
 == Autor(i)
+
 * Zalozil Queria Sa-Tas <public@sa-tas.net> ~2012
 
+
+
 == Licence
+
 Pro qsnet a vsechny jeho soucasti plati upravena/3-bodova BSD licence.
 
 Copyright (c) 2012, Queria Sa-Tas
