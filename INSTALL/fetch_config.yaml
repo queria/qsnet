@@ -1,0 +1,16 @@
+
+db:
+  host: localhost
+  user: dbuser
+  password: dbpass
+  name: qsnet
+
+arp:
+  host: routeros-IP-here
+  community: public
+  oid: 1.3.6.1.2.1.4.22
+
+accountig:
+  host: 
+  url: 
+
