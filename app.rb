@@ -2,6 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
 require 'mysql'
+require 'yaml'
 
 config = YAML.load_file(File.dirname(__FILE__)+'/fetch_config.yaml')
 
