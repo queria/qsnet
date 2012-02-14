@@ -4,6 +4,12 @@ require 'rubygems'
 require 'yaml'
 require 'mysql'
 
+def clear_mac(mac, delimiter=':')
+  mac.gsub('-', ' ').gsub(':',' ').split(' ').collect{ |touple|
+    touple.downcase.rjust(2, '0')
+  }.join(delimiter)
+end
+
 def prepare_snmp_row_pattern
 
   # two same examples of snmp row for arp table entry
@@ -37,6 +43,7 @@ def parse_table_from_snmp(snmp_arp_table)
 end
 
 def snmp_row_to_obj(snmp_row)
+  snmp_row['mac'] = clear_mac(snmp_row['mac'])
   snmp_row
 end
 
