@@ -42,14 +42,15 @@ end
 
 def transform_snmp_rows(table)
   table \
-  .reject { |id,arp| arp['status'] == 'invalid(2)' } \
+  .reject { |id,arp| arp['status'] == '2' } \
   .collect { |id,arp| snmp_row_to_obj(arp) }
+  # status 2 == invalid
 end
 
 def load_arp_from_snmp(host, community, oid)
   transform_snmp_rows(
     parse_table_from_snmp(
-      `snmpwalk -O n -v1 -c #{community} #{host} #{oid}`))
+      `snmpwalk -One -v1 -c #{community} #{host} #{oid}`))
 end
 
 
