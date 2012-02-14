@@ -1,46 +1,55 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
 require 'yaml'
 require 'mysql'
 
+def prepare_snmp_row_pattern
 
+  # two same examples of snmp row for arp table entry
+  # .1.3.6.1.2.1.4.22.1.3.13.192.168.0.1 = IpAddress: 192.168.0.1
+  # IP-MIB::ipNetToMediaNetAddress.13.192.168.0.1 = IpAddress: 192.168.0.1
+  
+  oidprefix = ".1.3.6.1.2.1.4.22.1."
+  attr = '[0-9]+'
+  id = '[0-9\.]+'
+  datatype = '[a-zA-Z]+'
+  value = '.*'
 
-###
-### Used to obtain ARP table from RouterOS via SNMP
-###
+  return /#{Regexp.quote(oidprefix)}(#{attr})\.(#{id}) = #{datatype}: (#{value})/
+
+end
 
 def parse_table_from_snmp(snmp_arp_table)
-  row_pattern = /IP-MIB::([a-zA-Z]+)\.([0-9\.]+) = [a-zA-Z]+: (.*)$/mi
+  row_pattern = prepare_snmp_row_pattern
+  attr_types = [nil, 'ifc', 'mac', 'ip', 'status']
   table = {}
 
   snmp_arp_table.split("\n").each do |snmp_row|
     row = snmp_row.match(row_pattern)
     next unless row
 
-    table[row[2]] ||= {}
-    table[row[2]][row[1]] = row[3]
+    table[ row[2] ] ||= {}
+    table[ row[2] ][ attr_types[row[1].to_i] ] = row[3]
   end
+
   return table
 end
 
 def snmp_row_to_obj(snmp_row)
-    {
-      'ip' => snmp_row['ipNetToMediaNetAddress'],
-      'mac' => snmp_row['ipNetToMediaPhysAddress'],
-      'type' => snmp_row['ipNetToMediaType']
-    }
+  snmp_row
 end
 
 def transform_snmp_rows(table)
-  table
-  .reject { |id,arp| arp['ipNetToMediaType'] == 'invalid(2)' }
+  table \
+  .reject { |id,arp| arp['status'] == 'invalid(2)' } \
   .collect { |id,arp| snmp_row_to_obj(arp) }
 end
 
 def load_arp_from_snmp(host, community, oid)
   transform_snmp_rows(
     parse_table_from_snmp(
-      `snmpwalk -v1 -c #{community} #{host} #{oid}`))
+      `snmpwalk -O n -v1 -c #{community} #{host} #{oid}`))
 end
 
 
