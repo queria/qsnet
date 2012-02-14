@@ -5,11 +5,11 @@
     <th>IP</th>
     <th>MAC@time</th>
   </tr>
-  <% @arp_table.each do |ip,macs| %>
+  <% @arp_table.keys.sort_by { |ip| ip.split('.').collect { |part| part.to_i } }.each do |ip| %>
     <tr>
       <td><%= ip %></td>
       <td>
-        <% macs.each do |entry| %>
+        <% @arp_table[ip].each do |entry| %>
           <%= entry['mac'] %> seen last at <%= entry['seen_at'] %><br />
         <% end %>
       </td>
