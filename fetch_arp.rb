@@ -13,7 +13,7 @@ def prepare_snmp_row_pattern
   oidprefix = ".1.3.6.1.2.1.4.22.1."
   attr = '[0-9]+'
   id = '[0-9\.]+'
-  datatype = '[a-zA-Z]+'
+  datatype = '[a-zA-Z-]+'
   value = '.*'
 
   return /#{Regexp.quote(oidprefix)}(#{attr})\.(#{id}) = #{datatype}: (#{value})/
