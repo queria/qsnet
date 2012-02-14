@@ -83,7 +83,7 @@ def load_last_ip_entries(db)
 end
 
 def store_new_ip_entries(db, last, new)
-  now = Time.now
+  now = Time.now.strftime('%Y-%m-%dT%H:%M:%S%z') #v novejsim ruby muzem zjednodusit na Time#iso8601
   new.each do |entry|
     ip = entry['ip']
     if last[ip].nil? or last[ip]['mac'] != entry['mac']
