@@ -1,4 +1,7 @@
 
+base:
+  url: /
+
 db:
   host: localhost
   user: dbuser

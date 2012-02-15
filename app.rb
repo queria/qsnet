@@ -11,6 +11,7 @@ config = YAML.load_file(File.dirname(__FILE__)+'/config.yaml')
 configure do
   set :session_name, 'qsnet'
   set :session_expire, 600
+  set :session_fail, config['base']['url']+'login'
 end
 
 before do
