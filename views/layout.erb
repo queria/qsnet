@@ -4,69 +4,7 @@
     <title>QSNet</title>
     <script type="text/javascript" src="<%= @config['base']['url'] %>jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="<%= @config['base']['url'] %>mac.js"></script>
-    <style type="text/css">
-      * {
-        font-family: sans-serif;
-        font-size: 14px;
-        color:#ccc;
-      }
-      body { background-color:black; color:#ccc; }
-      h1 {
-        float:right;
-        font-size:34px;
-      }
-      h2 { font-size: 26px; }
-      h3 { font-size: 20px; }
-      a, a:link, a:visited, a:active, a:hover {
-        color: green;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      nav ul, nav li {
-        display: inline-block;
-        margin:4px;
-      }
-      nav a, nav a:link, nav a:visited, nav a:active, nav a:hover {
-        display:inline-block;
-        padding: 3px;
-        color:#000;
-        background-color: #ccc;
-        text-shadow: #cc0 0px 0px 5px;
-        box-shadow: 0px 0px 7px #ccc;
-        -moz-box-shadow: 0px 0px 7px #ccc;
-      }
-      nav a:hover {
-        background-color: #fff;
-        text-shadow: #ff0 0px 0px 5px;
-        box-shadow: -2px 2px 7px #fff;
-        -moz-box-shadow: -2px 2px 7px #fff;
-        position:relative;
-        top:-2px;
-        left:2px;
-      }
-      article {
-        clear:both;
-        border: 2px dashed #ccc;
-        margin:2em;
-        padding:1em;
-        background-color: #666;
-        color: black;
-      }
-      article * { color: black; }
-
-      .error {
-        color:red;
-        text-shadow: 0px 0px 4px #000;
-        text-align:center;
-        font-style:italic;
-      }
-
-      .macOver {
-        color:yellow;
-      }
-    </style>
+    <link rel="stylesheet" href="<%= @config['base']['url'] %>main.css" type="text/css" media="screen" />
   </head>
   <body>
     <h1>QSNet</h1>
