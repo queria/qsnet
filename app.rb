@@ -5,7 +5,7 @@ require 'sinatra/session'
 require 'mysql'
 require 'yaml'
 
-config = YAML.load_file(File.dirname(__FILE__)+'/fetch_config.yaml')
+config = YAML.load_file(File.dirname(__FILE__)+'/config.yaml')
 
 
 configure do

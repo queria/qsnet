@@ -27,7 +27,7 @@ Planovano:
 
 * pripravte DB pro qsnet (prozatim podporavana MySQL)
 * naimportujte strukturu tabulek (mysql -p -u $dbuser $dbname INSTALL/fetch.struct.sql)
-* zkopirujte ukazkovy soubor s nastavenim (cp INSTALL/fetch_config.yaml ./)
+* zkopirujte ukazkovy soubor s nastavenim (cp INSTALL/config.yaml ./)
 * upravte si soubor s nastevim aby odpovidalo Vasemu prostredi (db, ip adresy ...)
 * nyni muzete spoustet fetch_*.rb skripty pro ziskani dat
 ** doporucuji umistit do cronu pro automatizaci ;]
