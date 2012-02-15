@@ -3,6 +3,7 @@ require 'bundler/setup'
 require 'sinatra'
 require 'sinatra/session'
 require 'mysql'
+require 'md5'
 require 'yaml'
 
 config = YAML.load_file(File.dirname(__FILE__)+'/config.yaml')
@@ -16,6 +17,7 @@ end
 
 before do
   request.env['PATH_INFO'].gsub!(/\/$/, '')
+  @config = config
 end
 
 

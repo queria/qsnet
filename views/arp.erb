@@ -10,7 +10,9 @@
       <td><%= ip %></td>
       <td>
         <% @arp_table[ip].each do |entry| %>
-          <%= entry['mac'] %> seen last at <%= entry['seen_at'] %><br />
+          <span class="mac" data-mac="mac<%= MD5::md5(entry['mac']) %>"><%= entry['mac'] %></span>
+          <em>last seen at</em>
+          <%= entry['seen_at'] %><br />
         <% end %>
       </td>
     </tr>
