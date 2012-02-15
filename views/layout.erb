@@ -2,18 +2,88 @@
   <head>
     <meta charset="utf-8" />
     <title>QSNet</title>
+    <style type="text/css">
+      * {
+        font-family: sans-serif;
+        font-size: 14px;
+        color:#ccc;
+      }
+      body { background-color:black; color:#ccc; }
+      h1 {
+        float:right;
+        font-size:34px;
+      }
+      h2 { font-size: 26px; }
+      h3 { font-size: 20px; }
+      a, a:link, a:visited, a:active, a:hover {
+        color: green;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      nav ul, nav li {
+        display: inline-block;
+        margin:4px;
+      }
+      nav a, nav a:link, nav a:visited, nav a:active, nav a:hover {
+        display:inline-block;
+        padding: 3px;
+        color:#000;
+        background-color: #ccc;
+        text-shadow: #cc0 0px 0px 5px;
+        box-shadow: 0px 0px 7px #ccc;
+        -moz-box-shadow: 0px 0px 7px #ccc;
+      }
+      nav a:hover {
+        background-color: #fff;
+        text-shadow: #ff0 0px 0px 5px;
+        box-shadow: -2px 2px 7px #fff;
+        -moz-box-shadow: -2px 2px 7px #fff;
+        position:relative;
+        top:-2px;
+        left:2px;
+      }
+      article {
+        clear:both;
+        border: 2px dashed #ccc;
+        margin:2em;
+        padding:1em;
+        background-color: #666;
+        color: black;
+      }
+      article * { color: black; }
+
+      .error {
+        color:red;
+        text-shadow: 0px 0px 4px #000;
+        text-align:center;
+        font-style:italic;
+      }
+    </style>
   </head>
   <body>
     <h1>QSNet</h1>
-    <ul>
-      <li><a href="<%= url('/') %>">Index</a></li>
-      <li><a href="<%= url('/pings') %>">Pings</a></li>
-      <li><a href="<%= url('/arp') %>">ARP History</a></li>
-      <li><a href="<%= url('/status') %>">Status</a></li>
-      <li><a href="/munin/">Munin &rarr;</a></li>
-    </ul>
+    <% if session? %>
+      <nav>
+      <ul>
+        <li><a href="<%= url('/') %>">Index</a></li>
+        <li><a href="<%= url('/pings') %>">Pings</a></li>
+        <li><a href="<%= url('/arp') %>">ARP History</a></li>
+        <li><a href="<%= url('/status') %>">Status</a></li>
+      </ul>
+      <ul>
+        <li><a href="<%= url('/logout') %>">Logout</a></li>
+      </ul>
+      <ul>
+        <li><a href="/munin/">Munin &rarr;</a></li>
+      </ul>
+      </nav>
+    <% end %>
 
+    <article>
     <%= yield %>
+    </article>
   </body>
 </html>
 

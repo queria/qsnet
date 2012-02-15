@@ -14,3 +14,7 @@ accountig:
   host: 
   url: 
 
+auth:
+  login: test
+  pass: testPwd
+  
