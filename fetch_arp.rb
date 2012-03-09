@@ -119,12 +119,18 @@ if __FILE__ == $0
 
   old_entries = load_last_ip_entries(db)
 
-  new_entries = load_arp_from_snmp(
-    config['arp']['host'],
-    config['arp']['community'],
-    config['arp']['oid'])
+  unless config['arp'].is_a? Array
+    config['arp'] = [ config['arp'] ]
+  end
 
-  store_new_ip_entries(db, old_entries, new_entries)
+  config['arp'].each do |arp_source|
+    new_entries = load_arp_from_snmp(
+      arp_source['host'],
+      arp_source['community'],
+      arp_source['oid'])
+    store_new_ip_entries(db, old_entries, new_entries)
+  end
+
 
   db.close
 
