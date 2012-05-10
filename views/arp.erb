@@ -16,7 +16,7 @@
               <%= @mac_notes[entry['mac']] %>
             </span>
           <% else %>
-            <span class="mac" data-mac="mac<%= MD5::md5(entry['mac']) %>"><%= entry['mac'] %></span>
+            <span class="mac macUnknown" data-mac="mac<%= MD5::md5(entry['mac']) %>"><%= entry['mac'] %></span>
           <% end %>
           <em>last seen at</em>
           <%= entry['seen_at'] %><br />

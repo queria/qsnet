@@ -62,6 +62,10 @@ article * { color: black; }
   font-style:italic;
 }
 
+.macUnknown {
+  background: url('./vlnka.gif') repeat-x 0 100%;
+  /* zdroj stylu i obrazku: http://teststranek.kvalitne.cz/podtrzeni-obrazkem/ */
+}
 .macOver {
   color:yellow;
 }
