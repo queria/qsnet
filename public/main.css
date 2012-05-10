@@ -14,7 +14,7 @@ h2 { font-size: 26px; }
 h3 { font-size: 20px; }
 
 a, a:link, a:visited, a:active, a:hover {
-  color: white;
+  color: #9f9;
   text-shadow: 1px 1px 1px green;
   text-decoration: none;
 }
@@ -50,10 +50,11 @@ article {
   border: 2px dashed #ccc;
   margin:2em;
   padding:1em;
-  background-color: #666;
-  color: black;
+  background-color: #333;
+  color: #dfd;
+  position:relative;
 }
-article * { color: black; }
+article * { color: #dfd; }
 
 .error {
   color:red;
@@ -62,6 +63,17 @@ article * { color: black; }
   font-style:italic;
 }
 
+#arpTable td {
+  border-top: 1px solid #555;
+  padding: 2px 1px 2px 1px;
+  vertical-align: top;
+}
+
+#macNotes {
+  position: fixed;
+  top: 6em;
+  right: 4em;
+}
 .macUnknown {
   background: url('./vlnka.gif') repeat-x 0 100%;
   /* zdroj stylu i obrazku: http://teststranek.kvalitne.cz/podtrzeni-obrazkem/ */
