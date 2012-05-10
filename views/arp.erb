@@ -32,7 +32,7 @@
     <th>Note</th>
     <th>&nbsp</th>
   </tr>
-  <% @mac_notes.keys.sort.each do |mac| %>
+  <% @mac_notes.keys.sort_by{ |mac| @mac_notes[mac] }.each do |mac| %>
     <tr>
       <td><span class="mac" data-mac="mac<%= MD5::md5(mac) %>"><%= mac %></span></td>
       <td><%= @mac_notes[mac] %></td>

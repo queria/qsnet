@@ -75,7 +75,7 @@ get '/arp' do
     end
   end
 
-  db.query("SELECT * FROM mac_notes").each do |note|
+  db.query("SELECT * FROM mac_notes ORDER BY note").each do |note|
     @mac_notes[note[0]] = note[1]
   end
 
