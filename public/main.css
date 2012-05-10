@@ -62,9 +62,6 @@ article * { color: black; }
   font-style:italic;
 }
 
-.macNoted {
-	border-bottom: 1px dashed #999;
-}
 .macOver {
   color:yellow;
 }

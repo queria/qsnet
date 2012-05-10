@@ -10,7 +10,14 @@
       <td><%= ip %></td>
       <td>
         <% @arp_table[ip].each do |entry| %>
-          <span class="mac" data-mac="mac<%= MD5::md5(entry['mac']) %>" title="<%= @mac_notes[entry['mac']] %>"><%= entry['mac'] %></span>
+          <% if @mac_notes[entry['mac']] %>
+            <span class="mac" data-mac="mac<%= MD5::md5(entry['mac']) %>"
+              title="<%= entry['mac'] %>">
+              <%= @mac_notes[entry['mac']] %>
+            </span>
+          <% else %>
+            <span class="mac" data-mac="mac<%= MD5::md5(entry['mac']) %>"><%= entry['mac'] %></span>
+          <% end %>
           <em>last seen at</em>
           <%= entry['seen_at'] %><br />
         <% end %>
