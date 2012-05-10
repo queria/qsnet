@@ -57,13 +57,11 @@ end
 
 get '/arp' do
   session!
-  db = Mysql::new(
-    config['db']['host'],
-    config['db']['user'],
-    config['db']['password'],
-    config['db']['name'])
+  db = dbconn
 
   @arp_table = {}
+  @mac_notes = {}
+
   ip_addresses = db.query("SELECT ip FROM arp GROUP BY ip ORDER BY ip")
   ip_addresses.each do |ip|
     ip = ip[0]
@@ -77,7 +75,39 @@ get '/arp' do
     end
   end
 
+  db.query("SELECT * FROM mac_notes").each do |note|
+    @mac_notes[note[0]] = note[1]
+  end
+
+  @notefor = nil
+  unless params[:notefor].nil? or @mac_notes[params[:notefor]].nil?
+    @notefor = params[:notefor]
+  end
+  @shownoteform = ( @notefor or (params[:notefor] == 'new') )
+
   erb :arp
+end
+
+post '/arp/mac_note' do
+  session!
+  mac = params[:mac].strip
+  note = params[:note].strip
+
+  unless mac.empty?
+    db = dbconn
+    existing = db.query("SELECT * FROM mac_notes WHERE mac = '#{mac}'")
+    if existing.num_rows == 1
+      if note.empty?
+        query = "DELETE FROM mac_notes WHERE mac = '#{mac}'"
+      else
+        query = "UPDATE mac_notes SET note = '#{note}' WHERE mac = '#{mac}'"
+      end
+    else
+      query = "INSERT INTO mac_notes (mac, note) VALUES ('#{mac}', '#{note}')"
+    end
+    db.query(query)
+  end
+  redirect to('arp')
 end
 
 get '/status' do
@@ -85,4 +115,14 @@ get '/status' do
   erb :status
 end
 
+def dbconn
+  if @db.nil?
+    @db = Mysql::new(
+      @config['db']['host'],
+      @config['db']['user'],
+      @config['db']['password'],
+      @config['db']['name'])
+  end
+  return @db
+end
 

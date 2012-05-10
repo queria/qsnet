@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS mac_notes;
+
+CREATE TABLE mac_notes (
+	mac VARCHAR(255) NOT NULL,
+	note VARCHAR(255) NOT NULL,
+	PRIMARY KEY(mac)
+);

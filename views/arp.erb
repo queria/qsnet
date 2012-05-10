@@ -1,6 +1,6 @@
 <h2>ARP history</h2>
 
-<table>
+<table class="arpTable">
   <tr>
     <th>IP</th>
     <th>MAC@time</th>
@@ -10,12 +10,42 @@
       <td><%= ip %></td>
       <td>
         <% @arp_table[ip].each do |entry| %>
-          <span class="mac" data-mac="mac<%= MD5::md5(entry['mac']) %>"><%= entry['mac'] %></span>
+          <span class="mac" data-mac="mac<%= MD5::md5(entry['mac']) %>" title="<%= @mac_notes[entry['mac']] %>"><%= entry['mac'] %></span>
           <em>last seen at</em>
           <%= entry['seen_at'] %><br />
         <% end %>
       </td>
     </tr>
+  <% end %>
+</table>
+
+<table class="macNotes">
+  <tr>
+    <th>MAC</th>
+    <th>Note</th>
+    <th>&nbsp</th>
+  </tr>
+  <% @mac_notes.keys.sort.each do |mac| %>
+    <tr>
+      <td><span class="mac" data-mac="mac<%= MD5::md5(mac) %>"><%= mac %></span></td>
+      <td><%= @mac_notes[mac] %></td>
+      <td><a href="/arp?notefor=<%= mac %>">edit</a></td>
+    </tr>
+  <% end %>
+  <% if @shownoteform %>
+    <form action="/arp/mac_note/" method="post">
+      <tr>
+        <td>
+          <input type="text" name="mac" value="<%= @notefor.to_s %>" />
+        </td>
+        <td>
+          <input type="text" name="note" value="<%= @notefor ? @mac_notes[@notefor] : '' %>" />
+        </td>
+        <td><input type="submit" value="Save" /></td>
+      </tr>
+    </form>
+  <% else %>
+    <tr><td colspan="3"><a href="/arp?notefor=new">new</a></td></tr>
   <% end %>
 </table>
 

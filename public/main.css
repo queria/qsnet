@@ -14,7 +14,8 @@ h2 { font-size: 26px; }
 h3 { font-size: 20px; }
 
 a, a:link, a:visited, a:active, a:hover {
-  color: green;
+  color: white;
+  text-shadow: 1px 1px 1px green;
   text-decoration: none;
 }
 a:hover {
@@ -61,6 +62,9 @@ article * { color: black; }
   font-style:italic;
 }
 
+.macNoted {
+	border-bottom: 1px dashed #999;
+}
 .macOver {
   color:yellow;
 }

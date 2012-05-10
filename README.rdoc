@@ -15,8 +15,8 @@ Planovano:
 
 === Pozadavky
 
-* pro pouziti fetch_arp potrebujete prikaz snmpwalk (balicek snmp=debian, net-snmp=gentoo)
-* potrebujete ruby (vyvijeno na 1.9.2 ale melo by fungovat minimalne 1.8 ...)
+* pro pouziti fetch_arp potrebujete prikaz snmpwalk (balicek snmp=debian, net-snmp=gentoo, net-snmp-utils=fedora)
+* potrebujete ruby (vyvijeno na 1.9.2 ale melo by fungovat minimalne s 1.8 ...)
 * potrebujete gemy - viz Gemfile nebo:
 ** $ bundle install
 ** (na to potrebujete ruby a bundler [gem install bundler])
