@@ -1,13 +1,10 @@
-
-<h2>Status</h2>
-<style>
-  dd { white-space:pre; }
-</style>
-<dl>
-  <dt>Date:</dt><dd><%= `date` %></dd>
-  <dt>Uptime:</dt><dd><%= `uptime` %></dd>
-  <dt>Free:</dt><dd><%= `free -m` %></dd>
-  <dt>DiskFree:</dt><dd><%= `df -h` %></dd>
-  <dt>LoadAVG:</dt><dd><%= `cat /proc/loadavg` %></dd>
-</dl>
-
+<div id="systemStatus">
+  <h2>Status</h2>
+  <dl>
+    <dt>Date:</dt><dd><%= `date` %></dd>
+    <dt>Uptime:</dt><dd><%= `uptime` %></dd>
+    <dt>Free:</dt><dd><%= `free -m` %></dd>
+    <dt>DiskFree:</dt><dd><%= `df -h` %></dd>
+    <dt>LoadAVG:</dt><dd><%= `cat /proc/loadavg` %></dd>
+  </dl>
+</div>
