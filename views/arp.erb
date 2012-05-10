@@ -1,6 +1,6 @@
 <h2>ARP history</h2>
 
-<table class="arpTable">
+<table id="arpTable">
   <tr>
     <th>IP</th>
     <th>MAC@time</th>
@@ -19,7 +19,7 @@
   <% end %>
 </table>
 
-<table class="macNotes">
+<table id="macNotes">
   <tr>
     <th>MAC</th>
     <th>Note</th>
@@ -29,12 +29,12 @@
     <tr>
       <td><span class="mac" data-mac="mac<%= MD5::md5(mac) %>"><%= mac %></span></td>
       <td><%= @mac_notes[mac] %></td>
-      <td><a href="/arp?notefor=<%= mac %>">edit</a></td>
+      <td><a href="<%= url('/arp?notefor='+ mac + '#macNoteForm') %>">edit</a></td>
     </tr>
   <% end %>
   <% if @shownoteform %>
-    <form action="/arp/mac_note/" method="post">
-      <tr>
+    <form action="<%= to('/arp/mac_note/') %>" method="post">
+      <tr id="macNoteForm">
         <td>
           <input type="text" name="mac" value="<%= @notefor.to_s %>" />
         </td>
@@ -45,7 +45,7 @@
       </tr>
     </form>
   <% else %>
-    <tr><td colspan="3"><a href="/arp?notefor=new">new</a></td></tr>
+    <tr><td colspan="3"><a href="<%= url('/arp?notefor=new#macNoteForm') %>">new</a></td></tr>
   <% end %>
 </table>
 
