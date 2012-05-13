@@ -55,6 +55,9 @@ article {
   position:relative;
 }
 article * { color: #dfd; }
+article input, article textarea {
+  color: black;
+}
 
 .error {
   color:red;
