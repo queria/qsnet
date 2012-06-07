@@ -61,12 +61,13 @@ get '/arp' do
 
   @arp_table = {}
   @mac_notes = {}
+  @deleted = params[:deleted]
 
   ip_addresses = db.query("SELECT ip FROM arp GROUP BY ip ORDER BY ip")
   ip_addresses.each do |ip|
     ip = ip[0]
     @arp_table[ip] = []
-    macs = db.query("SELECT mac, seen_at " +
+    macs = db.query("SELECT id, mac, seen_at " +
                     "FROM arp WHERE ip = '#{ip}' " +
                     "ORDER BY seen_at DESC " +
                     "LIMIT 5")
@@ -86,6 +87,20 @@ get '/arp' do
   @shownoteform = ( @notefor or (params[:notefor] == 'new') )
 
   erb :arp
+end
+
+get '/arp/delete/:id' do
+  session!
+  db = dbconn
+
+  id = params[:id].to_i
+  unless id
+    redirect to('arp?deleted=invalid')
+  end
+
+  query = "DELETE FROM arp WHERE id = #{id}"
+  db.query(query)
+  redirect to("arp?deleted=#{db.affected_rows}")
 end
 
 post '/arp/mac_note' do

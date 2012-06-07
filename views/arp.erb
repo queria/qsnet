@@ -1,5 +1,14 @@
 <h2>ARP history</h2>
 
+<% unless @deleted.nil? %>
+  <div class="info">
+    <% if @deleted == 'invalid' %>
+      Unable to remove entry with invalid ID.
+    <% else %>
+      Deleted <%= @deleted.to_s %> entries.
+    <% end %>
+  </div>
+<% end %>
 <table id="arpTable">
   <tr>
     <th>IP</th>
@@ -18,8 +27,10 @@
           <% else %>
             <span class="mac macUnknown" data-mac="mac<%= MD5::md5(entry['mac']) %>"><%= entry['mac'] %></span>
           <% end %>
+          <a title="Remove this entry" href="<%= url('/arp/delete/'+entry['id'].to_s) %>">&times;</a>
           <em>last seen at</em>
-          <%= entry['seen_at'] %><br />
+          <%= entry['seen_at'] %>
+          <br />
         <% end %>
       </td>
     </tr>
