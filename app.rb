@@ -51,7 +51,7 @@ end
 
 get '/pings' do
   session!
-  @hosts = ['nix.cz', '192.168.100.50', '192.168.102.1']
+  @hosts = ['nix.cz', '192.168.100.253', '192.168.102.1']
   erb :pings
 end
 
