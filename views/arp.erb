@@ -9,62 +9,6 @@
     <% end %>
   </div>
 <% end %>
-<table id="arpTable">
-  <tr>
-    <th>IP</th>
-    <th>MAC@time</th>
-  </tr>
-  <% @arp_table.keys.sort_by { |ip| ip.split('.').collect { |part| part.to_i } }.each do |ip| %>
-    <tr>
-      <td><%= ip %></td>
-      <td>
-        <% @arp_table[ip].each do |entry| %>
-          <% if @mac_notes[entry['mac']] %>
-            <span class="mac" data-mac="mac<%= MD5::md5(entry['mac']) %>"
-              title="<%= entry['mac'] %>">
-              <%= @mac_notes[entry['mac']] %>
-            </span>
-          <% else %>
-            <span class="mac macUnknown" data-mac="mac<%= MD5::md5(entry['mac']) %>"><%= entry['mac'] %></span>
-          <% end %>
-          <a title="Remove this entry" href="<%= url('/arp/delete/'+entry['id'].to_s) %>">&times;</a>
-          <em>last seen at</em>
-          <%= entry['seen_at'] %>
-          <br />
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
-</table>
 
-<table id="macNotes">
-  <tr><td colspan="3"><h2>MAC Notes</h2></td></tr>
-  <tr>
-    <th>MAC</th>
-    <th>Note</th>
-    <th>&nbsp;</th>
-  </tr>
-  <% @mac_notes.keys.sort_by{ |mac| @mac_notes[mac] }.each do |mac| %>
-    <tr>
-      <td><span class="mac" data-mac="mac<%= MD5::md5(mac) %>"><%= mac %></span></td>
-      <td><%= @mac_notes[mac] %></td>
-      <td><a href="<%= url('/arp?notefor='+ mac + '#macNoteForm') %>">edit</a></td>
-    </tr>
-  <% end %>
-  <% if @shownoteform %>
-    <form action="<%= to('/arp/mac_note/') %>" method="post">
-      <tr id="macNoteForm">
-        <td>
-          <input type="text" name="mac" value="<%= @notefor.to_s %>" />
-        </td>
-        <td>
-          <input type="text" name="note" value="<%= @notefor ? @mac_notes[@notefor] : '' %>" />
-        </td>
-        <td><input type="submit" value="Save" /></td>
-      </tr>
-    </form>
-  <% else %>
-    <tr><td colspan="3"><a href="<%= url('/arp?notefor=new#macNoteForm') %>">new</a></td></tr>
-  <% end %>
-</table>
-
+<%= erb :_mac_history %>
+<%= erb :_mac_notes %>

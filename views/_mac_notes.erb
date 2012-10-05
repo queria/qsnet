@@ -1,0 +1,40 @@
+<table id="macNotes">
+  <thead>
+    <tr><td colspan="3"><h2>MAC Notes</h2></td></tr>
+    <tr>
+      <th class="c1">MAC</th>
+      <th class="c2">Note</th>
+      <th class="c3">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td colspan="3">
+      <div class="inner"><table>
+	<% @mac_notes.keys.sort_by{ |mac| @mac_notes[mac] }.each do |mac| %>
+	  <tr>
+	    <td class="c1"><span class="mac" data-mac="mac<%= MD5::md5(mac) %>"><%= mac %></span></td>
+	    <td class="c2"><%= @mac_notes[mac] %></td>
+	    <td class="c3"><a href="<%= url('/arp?notefor='+ mac + '#macNoteForm') %>">edit</a></td>
+	  </tr>
+	<% end %>
+      </table></div>
+    </td></tr>
+  </tbody>
+  <tfoot>
+    <% if @shownoteform %>
+      <form action="<%= to('/arp/mac_note/') %>" method="post">
+        <tr id="macNoteForm">
+          <td>
+            <input type="text" name="mac" value="<%= @notefor.to_s %>" />
+          </td>
+          <td>
+            <input type="text" name="note" value="<%= @notefor ? @mac_notes[@notefor] : '' %>" />
+          </td>
+          <td><input type="submit" value="Save" /></td>
+        </tr>
+      </form>
+    <% else %>
+      <tr><td colspan="3"><a href="<%= url('/arp?notefor=new#macNoteForm') %>">new</a></td></tr>
+    <% end %>
+  </tfoot>
+</table>

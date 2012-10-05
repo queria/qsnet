@@ -82,6 +82,13 @@ article input, article textarea {
   top: 6em;
   right: 4em;
 }
+#macNotes .inner {
+  height: 200px;
+  overflow-y:scroll;
+}
+#macNotes c1 {width:120px;}
+#macNotes c2 {width:220px;}
+#macNotes c3 {width:60px;}
 .macUnknown {
   background: url('./vlnka.gif') repeat-x 0 100%;
   /* zdroj stylu i obrazku: http://teststranek.kvalitne.cz/podtrzeni-obrazkem/ */
