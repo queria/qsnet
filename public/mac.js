@@ -1,6 +1,7 @@
 
 $(document).ready( function () {
-  $('#macNotes .inner').css('height', ($(window).height() - 220)+'px');
+  $('#macNotes .inner').css('height', (
+    Math.min($(window).height() - 220, $('article').height() - 100))+'px');
   $('.mac').mouseenter( function () {
     $('.mac[data-mac='+$(this).attr('data-mac')+']').addClass('macOver');
   });
