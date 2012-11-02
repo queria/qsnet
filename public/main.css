@@ -71,6 +71,18 @@ article input, article textarea {
   font-family: monospace;
 }
 
+#arpContent:after {
+  content:'.';
+  display:block;
+  clear:both;
+  height:0px;
+  visibility:hidden;
+}
+
+#arpTable {
+  float:left;
+}
+
 #arpTable td {
   border-top: 1px solid #555;
   padding: 2px 1px 2px 1px;
@@ -78,13 +90,12 @@ article input, article textarea {
 }
 
 #macNotes {
-  position: fixed;
-  top: 6em;
-  right: 4em;
+  clear:right;
+  margin-left:auto;
 }
 #macNotes .inner {
   height: 200px;
-  overflow-y:scroll;
+  overflow-y:auto;
 }
 #macNotes c1 {width:120px;}
 #macNotes c2 {width:220px;}
