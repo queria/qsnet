@@ -9,7 +9,7 @@
   </tr>
   <% @traffic.each_hash do |row| %>
     <tr>
-      <td><%= row['host'] %></td>
+      <td title="<%= row['host'] %>"><%= @names[row['host']] or row['host'] %></td>
       <td><%= bytesHuman(row['down']) %></td>
       <td><%= bytesHuman(row['up']) %></td>
       <td><%= row['pckt_down'].to_s %></td>

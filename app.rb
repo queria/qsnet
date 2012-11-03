@@ -6,18 +6,46 @@ require 'mysql'
 require 'md5'
 require 'yaml'
 
-config = YAML.load_file(File.dirname(__FILE__)+'/config.yaml')
+
+def dbconn
+  if @@db.nil?
+    @@db = Mysql::new(
+      @@config['db']['host'],
+      @@config['db']['user'],
+      @@config['db']['password'],
+      @@config['db']['name'])
+  end
+  return @@db
+end
+
+def known
+  if @@known['read_at'] < (Time.now.to_i - @@config['cachetime'])
+    db = dbconn
+    db.query('SELECT * FROM arp_current').each_hash do |host|
+      @@known['ip'][ host['ip'] ] = host
+      @@known['mac'][ host['mac'] ] = host
+    end
+    @@known['read_at'] = Time.now.to_i
+  end
+  @@known
+end
 
 
 configure do
+  @@config = YAML.load_file(File.dirname(__FILE__)+'/config.yaml')
+  @@config['cachetime'] ||= (12 * 60 * 60) # 12hours
+  @@config['traffic_interval'] ||= (7 * 24 * 60 * 60) # 1 week
+  @@known = { 'ip'=>{}, 'mac'=>{}, 'read_at' => 0 }
+  @@db = nil
   set :session_name, 'qsnet'
+  set :session_secret, '309fjsdo 0bfnsd09 4 dsfdgd'
   set :session_expire, 600
-  set :session_fail, config['base']['url']+'login'
+  set :session_fail, @@config['base']['url']+'login'
+  known() # initialize known ip/mac list
 end
 
 before do
   request.env['PATH_INFO'].gsub!(/\/$/, '')
-  @config = config
 end
 
 
@@ -30,7 +58,7 @@ post '/login' do
   @login = params[:login]
   @pass = params[:pass]
 
-  if @login == config['auth']['login'] and @pass == config['auth']['pass']
+  if @login == @@config['auth']['login'] and @pass == @@config['auth']['pass']
     session_start!
     if session[:backurl]
       backurl = session[:backurl]
@@ -82,8 +110,8 @@ get '/arp' do
     end
   end
 
-  db.query("SELECT * FROM mac_notes ORDER BY note").each do |note|
-    @mac_notes[note[0]] = note[1]
+  known()['mac'].each_pair do |mac,info|
+    @mac_notes[ mac ] = info['note'] if info['note']
   end
 
   @notefor = nil
@@ -127,6 +155,7 @@ post '/arp/mac_note' do
       query = "INSERT INTO mac_notes (mac, note) VALUES ('#{mac}', '#{note}')"
     end
     db.query(query)
+    @@known['read_at'] = 0 # force reload of known ip/mac/note cache
   end
   redirect to('arp')
 end
@@ -134,7 +163,7 @@ end
 get '/traffic' do
   check_auth(request)
   db = dbconn
-  interval_start = (Time.now - (24 * 60 * 60))
+  interval_start = (Time.now - @@config['traffic_interval'])
   interval_start = interval_start.strftime('%Y-%m-%dT%H:%M:%S%z')
 
   if ['up', 'down', 'pckt_up', 'pckt_down'].include? params['sort']
@@ -153,6 +182,11 @@ get '/traffic' do
     " GROUP BY host" +
     " ORDER BY #{sort}")
 
+  @names = {}
+  known()['ip'].each_pair do |ip,info|
+    @names[ip] = info['note'] if info['note']
+  end
+
   @params = params
   erb :traffic
 end
@@ -160,17 +194,6 @@ end
 get '/status' do
   check_auth(request)
   erb :status
-end
-
-def dbconn
-  if @db.nil?
-    @db = Mysql::new(
-      @config['db']['host'],
-      @config['db']['user'],
-      @config['db']['password'],
-      @config['db']['name'])
-  end
-  return @db
 end
 
 helpers do
