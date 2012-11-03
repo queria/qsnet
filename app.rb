@@ -32,7 +32,13 @@ post '/login' do
 
   if @login == config['auth']['login'] and @pass == config['auth']['pass']
     session_start!
-    redirect to('')
+    if session[:backurl]
+      backurl = session[:backurl]
+      session[:backurl] = nil
+      redirect to(backurl)
+    else
+      redirect to('')
+    end
   else
     redirect to("/login?login=#{@login}")
   end
@@ -45,18 +51,18 @@ get '/logout' do
 end
 
 get '' do
-  session!
+  check_auth(request)
   erb :index
 end
 
 get '/pings' do
-  session!
+  check_auth(request)
   @hosts = ['nix.cz', '192.168.100.253', '192.168.102.1']
   erb :pings
 end
 
 get '/arp' do
-  session!
+  check_auth(request)
   db = dbconn
 
   @arp_table = {}
@@ -90,7 +96,7 @@ get '/arp' do
 end
 
 get '/arp/delete/:id' do
-  session!
+  check_auth(request)
   db = dbconn
 
   id = params[:id].to_i
@@ -104,7 +110,7 @@ get '/arp/delete/:id' do
 end
 
 post '/arp/mac_note' do
-  session!
+  check_auth(request)
   mac = params[:mac].strip
   note = params[:note].strip
 
@@ -126,7 +132,7 @@ post '/arp/mac_note' do
 end
 
 get '/traffic' do
-  session!
+  check_auth(request)
   db = dbconn
   interval_start = (Time.now - (24 * 60 * 60))
   interval_start = interval_start.strftime('%Y-%m-%dT%H:%M:%S%z')
@@ -152,7 +158,7 @@ get '/traffic' do
 end
 
 get '/status' do
-  session!
+  check_auth(request)
   erb :status
 end
 
@@ -168,6 +174,12 @@ def dbconn
 end
 
 helpers do
+  def check_auth(request)
+    return if session?
+    session[:backurl] = request.path_info
+    session!
+  end
+
   def bytesHuman(bytes)
     bytes = bytes.to_f
     units = ['B', 'KB', 'MB', 'GB', 'TB']
