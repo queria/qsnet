@@ -19,9 +19,12 @@ arp:
     community: public
     oid: 1.3.6.1.2.1.4.22
 
-accountig:
-  host: 
-  url: 
+accounting:
+  local: 192\.168\.[0-9]{1,3}\.[0-9]{1,3}
+  sources:
+    - http://{firts_ros_ip}/accounting/ip.cgi
+    - http://another/accounting/url
+    - /or/local/path/to/source/file
 
 auth:
   login: test

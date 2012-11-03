@@ -5,9 +5,7 @@ Jednoduche nastroje a webove rozhrani pro zprijemneni kontroly male/domaci site.
 Umoznuje:
 * ping preddefinovanych IP adres
 * <em>dohled</em> nad arp tabulkou zarizeni s RouterOS
-
-Planovano:
-* pocitani a zobrazeni informaci o trafficu dle accounting zaznamu z RouterOS
+* ziskani a vypis informaci o trafficu dle IP Accounting zaznamu z RouterOS
 
 
 
@@ -26,9 +24,13 @@ Planovano:
 * pripravte DB pro qsnet (prozatim podporavana MySQL)
 * naimportujte strukturu tabulek (<tt>mysql -p -u $dbuser $dbname INSTALL/fetch.struct.sql</tt>)
 * zkopirujte ukazkovy soubor s nastavenim (<tt>cp INSTALL/config.yaml ./</tt>)
-* upravte si soubor s nastevim aby odpovidalo Vasemu prostredi (db, ip adresy ...)
+* upravte si soubor s nastavenim aby odpovidalo Vasemu prostredi (db, ip adresy ...)
 * nyni muzete spoustet fetch_*.rb skripty pro ziskani dat
-  * doporucuji umistit do cronu pro automatizaci ;]
+  * nejdrive overte funkcnost rucnim spustenim
+  * je-li to ok, pridejte si zaznamy do cronu
+   * pro arp radsi casteji (aby nehrozilo "vynechani" zaznamu) (napr. po par minutach)
+   * pro accounting je dobre volit mezi nutnosti aktualnich udaju na webu
+     proti poctu zaznamu v db (zatez) (tzn jednou tydne, denne ci za hodinu)
 
 === Zprovozneni weboveho rozhrani
 

@@ -1,0 +1,22 @@
+<%= @params.inspect %>
+<table id="trafficTable">
+  <tr>
+    <th><%= sortL('Host', @params) %></th>
+    <th><%= sortL('Down', @params) %></th>
+    <th><%= sortL('Up', @params) %></th>
+    <th><%= sortL('PcktDown', @params, 'pckt_down') %></th>
+    <th><%= sortL('PcktUp', @params, 'pckt_up') %></th>
+    <th><%= sortL('Remotes', @params) %></th>
+  </tr>
+  <% @traffic.each_hash do |row| %>
+    <tr>
+      <td><%= row['host'] %></td>
+      <td><%= bytesHuman(row['down']) %></td>
+      <td><%= bytesHuman(row['up']) %></td>
+      <td><%= row['pckt_down'].to_s %></td>
+      <td><%= row['pckt_up'].to_s %></td>
+      <td><%= row['remotes'].to_s %></td>
+    </tr>
+  <% end %>
+</table>
+

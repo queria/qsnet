@@ -125,6 +125,32 @@ post '/arp/mac_note' do
   redirect to('arp')
 end
 
+get '/traffic' do
+  session!
+  db = dbconn
+  interval_start = (Time.now - (24 * 60 * 60))
+  interval_start = interval_start.strftime('%Y-%m-%dT%H:%M:%S%z')
+
+  if ['up', 'down', 'pckt_up', 'pckt_down'].include? params['sort']
+    sort = "SUM(#{params[:sort]}) DESC"
+  elsif params['sort'] == 'remotes'
+    sort = "remotes DESC"
+  else
+    params['sort'] = 'host'
+    sort = "INET_ATON(host)"
+  end
+  
+  @traffic = db.query("SELECT host, SUM(up) AS up, SUM(down) AS down," +
+    " SUM(pckt_up) AS pckt_up, SUM(pckt_down) AS pckt_down, COUNT(remote) AS remotes" +
+    " FROM accounting" +
+    " WHERE fetched_at > '#{interval_start}'" +
+    " GROUP BY host" +
+    " ORDER BY #{sort}")
+
+  @params = params
+  erb :traffic
+end
+
 get '/status' do
   session!
   erb :status
@@ -139,5 +165,41 @@ def dbconn
       @config['db']['name'])
   end
   return @db
+end
+
+helpers do
+  def bytesHuman(bytes)
+    bytes = bytes.to_f
+    units = ['B', 'KB', 'MB', 'GB', 'TB']
+    idx = 0
+    while bytes > 1024
+      bytes = bytes / 1024
+      idx += 1
+    end
+    suff = units[idx] or '??'
+    bytes = (bytes * 100).round().to_f / 100 # just round(2) in ruby 1.9.3
+    "#{bytes} #{suff}"
+  end
+  
+  def sortL(text, params, key=nil)
+    key = text.downcase unless key
+    if key == params['sort']
+      return text
+    end
+    params = params.clone
+    params['sort'] = key
+    #return "<i>#{key}</i>"
+    url_params = paramsUrl(params)
+    return "<a href=\"?#{url_params}\">#{text}</a>"
+  end
+
+  def paramsUrl(params)
+    u = []
+    params.keys.each { |k|
+      kurl = k.to_s.sub(':','')
+      u << "#{kurl}=#{params[k]}"
+    }
+    return u.join("&amp;")
+  end
 end
 

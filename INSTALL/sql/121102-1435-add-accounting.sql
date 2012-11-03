@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS accounting;
+
+CREATE TABLE accounting (
+	id INTEGER AUTO_INCREMENT,
+	fetched_at DATETIME,
+	host VARCHAR(255) NOT NULL,
+	remote VARCHAR(255) NOT NULL,
+	up BIGINT DEFAULT 0,
+	down BIGINT DEFAULT 0,
+	pckt_up BIGINT DEFAULT 0,
+	pckt_down BIGINT DEFAULT 0,
+	PRIMARY KEY(id)
+);

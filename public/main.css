@@ -108,3 +108,5 @@ article input, article textarea {
   color:yellow;
 }
 
+#trafficTable { }
+#trafficTable td { padding-right: 7px; }
