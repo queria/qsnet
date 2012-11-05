@@ -6,5 +6,8 @@
     <dt>Free:</dt><dd><%= `free -m` %></dd>
     <dt>DiskFree:</dt><dd><%= `df -h` %></dd>
     <dt>LoadAVG:</dt><dd><%= `cat /proc/loadavg` %></dd>
+    <dt>Top's head:</dt><dd><%= `top -b -n 1|head -n 12` %></dd>
+    <dt>QSNet log - last 150: <a href="#" id="logToggler"></a></dt>
+      <dd id="logArea"><%= `cat -n ./logs/sinatra.log|tail -n 150` %></dd>
   </dl>
 </div>

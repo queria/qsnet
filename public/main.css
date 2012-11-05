@@ -110,3 +110,13 @@ article input, article textarea {
 
 #trafficTable { }
 #trafficTable td { padding-right: 7px; }
+
+#logArea {
+  color:#222;
+  font-family:monospace;
+  white-space:pre;
+  background-color:#aaa;
+  height:200px;
+  overflow:auto;
+}
+
