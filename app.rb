@@ -14,6 +14,7 @@ def dbconn
       @@config['db']['user'],
       @@config['db']['password'],
       @@config['db']['name'])
+    @@db.reconnect = true
   end
   return @@db
 end
