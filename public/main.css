@@ -110,6 +110,10 @@ article input, article textarea {
 
 #trafficTable { }
 #trafficTable td { padding-right: 7px; }
+#trafficTable .total td, #trafficTable .total th {
+  font-weight:bold;
+  border-top: 1px solid #ccc;
+}
 
 #logArea {
   color:#222;

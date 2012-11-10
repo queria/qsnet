@@ -35,7 +35,7 @@ end
 configure do
   @@config = YAML.load_file(File.dirname(__FILE__)+'/config.yaml')
   @@config['cachetime'] ||= (12 * 60 * 60) # 12hours
-  @@config['traffic_interval'] ||= (7 * 24 * 60 * 60) # 1 week
+  @@config['traffic_interval'] ||= 7 # in days
   @@known = { 'ip'=>{}, 'mac'=>{}, 'read_at' => 0 }
   @@db = nil
   set :session_name, 'qsnet'
@@ -164,8 +164,10 @@ end
 get '/traffic' do
   check_auth(request)
   db = dbconn
-  interval_start = (Time.now - @@config['traffic_interval'])
-  interval_start = interval_start.strftime('%Y-%m-%dT%H:%M:%S%z')
+
+  @days = @@config['traffic_interval']
+  @days = max(params['days'].to_i, 1) if params['days']
+
 
   if ['up', 'down', 'pckt_up', 'pckt_down'].include? params['sort']
     sort = "SUM(#{params[:sort]}) DESC"
@@ -176,6 +178,8 @@ get '/traffic' do
     sort = "INET_ATON(host)"
   end
   
+  interval_start = (Time.now - (@days * 24 * 60 * 60))
+  interval_start = interval_start.strftime('%Y-%m-%dT%H:%M:%S%z')
   @traffic = db.query("SELECT host, SUM(up) AS up, SUM(down) AS down," +
     " SUM(pckt_up) AS pckt_up, SUM(pckt_down) AS pckt_down, COUNT(remote) AS remotes" +
     " FROM accounting" +
@@ -187,6 +191,10 @@ get '/traffic' do
   known()['ip'].each_pair do |ip,info|
     @names[ip] = info['note'] if info['note']
   end
+
+  @sum = {'down'=>0, 'up'=>0, 'pckt_down'=>0, 'pckt_up'=>0}
+  @traffic.each_hash { |info| @sum.keys.each { |key| @sum[key] += info[key].to_i } } #@sum.keys.each { |key| @sum[key] += info[key] } }
+  @traffic.data_seek 0
 
   @params = params
   erb :traffic
@@ -204,7 +212,7 @@ helpers do
     session!
   end
 
-  def bytesHuman(bytes)
+  def formatBytes(bytes)
     bytes = bytes.to_f
     units = ['B', 'KB', 'MB', 'GB', 'TB']
     idx = 0
@@ -215,6 +223,14 @@ helpers do
     suff = units[idx] or '??'
     bytes = (bytes * 100).round().to_f / 100 # just round(2) in ruby 1.9.3
     "#{bytes} #{suff}"
+  end
+
+  def formatPcktCnt(number)
+    number = number.to_f
+    return number.to_s if number < 1000
+    number /= 1000
+    return sprintf("%.2fk", number) if number < 1000
+    return sprintf("%.2fmil", number/1000)
   end
   
   def sortL(text, params, key=nil)

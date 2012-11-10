@@ -1,3 +1,4 @@
+<h2>Traffic for last <%= @days %> days</h2>
 <table id="trafficTable">
   <tr>
     <th><%= sortL('Host', @params) %></th>
@@ -10,12 +11,20 @@
   <% @traffic.each_hash do |row| %>
     <tr>
       <td title="<%= row['host'] %>"><%= @names[row['host']] or row['host'] %></td>
-      <td><%= bytesHuman(row['down']) %></td>
-      <td><%= bytesHuman(row['up']) %></td>
+      <td><%= formatBytes(row['down']) %></td>
+      <td><%= formatBytes(row['up']) %></td>
       <td><%= row['pckt_down'].to_s %></td>
       <td><%= row['pckt_up'].to_s %></td>
       <td><%= row['remotes'].to_s %></td>
     </tr>
   <% end %>
+    <tr class="total">
+      <th>Total</td>
+      <td><%= formatBytes(@sum['down']) %></td>
+      <td><%= formatBytes(@sum['up']) %></td>
+      <td><%= formatPcktCnt(@sum['pckt_down']) %></td>
+      <td><%= formatPcktCnt(@sum['pckt_up']) %></td>
+      <td>&mdash;</td>
+    </tr>
 </table>
 
