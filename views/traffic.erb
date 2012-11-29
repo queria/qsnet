@@ -1,4 +1,8 @@
-<h2>Traffic for last <%= @days %> days</h2>
+<h2>Traffic</h2>
+<form action="./traffic" method="get">
+  Display traffic only for last <input type="text" id="days" name="days" size="3" value="<%= @days %>" /> days.
+  <input type="submit" value="Apply" />
+</form>
 <table id="trafficTable">
   <tr>
     <th><%= sortL('Host', @params) %></th>
@@ -27,4 +31,3 @@
       <td>&mdash;</td>
     </tr>
 </table>
-

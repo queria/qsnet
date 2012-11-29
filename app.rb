@@ -166,7 +166,8 @@ get '/traffic' do
   db = dbconn
 
   @days = @@config['traffic_interval']
-  @days = max(params['days'].to_i, 1) if params['days']
+  @days = [params['days'].to_i, 1].max if params['days']
+  params['days'] = @days
 
 
   if ['up', 'down', 'pckt_up', 'pckt_down'].include? params['sort']
