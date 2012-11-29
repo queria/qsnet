@@ -17,8 +17,8 @@
       <td title="<%= row['host'] %>"><%= @names[row['host']] or row['host'] %></td>
       <td><%= formatBytes(row['down']) %></td>
       <td><%= formatBytes(row['up']) %></td>
-      <td><%= row['pckt_down'].to_s %></td>
-      <td><%= row['pckt_up'].to_s %></td>
+      <td><%= formatPcktCnt(row['pckt_down']) %></td>
+      <td><%= formatPcktCnt(row['pckt_up']) %></td>
       <td><%= row['remotes'].to_s %></td>
     </tr>
   <% end %>
@@ -31,3 +31,49 @@
       <td>&mdash;</td>
     </tr>
 </table>
+
+<h3>Statistics</h3>
+<table id="trafficStatsTable">
+  <tr>
+    <th>&nbsp;</th>
+    <th>Value (Down / Up)</th>
+  </tr>
+  <tr>
+    <th>Packet size:</th>
+    <td>
+      <%= formatBytes(@stats['pckt_size_down']) %>
+      / <%= formatBytes(@stats['pckt_size_up']) %>
+    </td>
+  </tr>
+
+  <tr>
+    <th>Packets/host:</th>
+    <td>
+      <%= formatPcktCnt(@stats['pckt_cnt_down']) %>
+      / <%= formatPcktCnt(@stats['pckt_cnt_up']) %>
+    </td>
+  </tr>
+
+  <tr>
+    <th>Packets/1G:</th>
+    <td>
+      <%= formatPcktCnt(@stats['pckt_cnt_1g_down']) %>
+      / <%= formatPcktCnt(@stats['pckt_cnt_1g_up']) %>
+    </td>
+  </tr>
+
+  <tr>
+    <th>Remotes/host:</th>
+    <td><%= @stats['remotes'] %></td>
+  </tr>
+
+  <tr>
+    <th>Remotes/1GB:</th>
+    <td>
+      <%= @stats['remotes_1g_down'] %>
+      / <%= @stats['remotes_1g_up'] %>
+    </td>
+  </tr>
+</table>
+
+

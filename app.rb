@@ -193,10 +193,23 @@ get '/traffic' do
     @names[ip] = info['note'] if info['note']
   end
 
-  @sum = {'down'=>0, 'up'=>0, 'pckt_down'=>0, 'pckt_up'=>0}
+  @sum = {'down'=>0, 'up'=>0, 'pckt_down'=>0, 'pckt_up'=>0, 'remotes'=>0} # remotes are not globaly unique!
   @traffic.each_hash { |info| @sum.keys.each { |key| @sum[key] += info[key].to_i } } #@sum.keys.each { |key| @sum[key] += info[key] } }
   @traffic.data_seek 0
 
+  G1 = (1024 * 1024 * 1024)
+  @stats = {
+    'pckt_size_down' => @sum['down'] / @sum['pckt_down'],
+    'pckt_size_up' => @sum['up'] / @sum['pckt_down'],
+    'pckt_cnt_down' => @sum['pckt_down'] / @traffic.num_rows,
+    'pckt_cnt_up' => @sum['pckt_up'] / @traffic.num_rows,
+    'pckt_cnt_1g_down' => G1 / (@sum['down'] / @sum['pckt_down']),
+    'pckt_cnt_1g_up' => G1 / (@sum['up'] / @sum['pckt_up']),
+    #'remotes' => @traffic.methods.sort.join(', ')
+    'remotes' => @sum['remotes'] / @traffic.num_rows,
+    'remotes_1g_down' => G1 / (@sum['down'] / @sum['remotes']),
+    'remotes_1g_up' => G1 / (@sum['up'] / @sum['remotes'])
+  }
   @params = params
   erb :traffic
 end

@@ -109,11 +109,13 @@ article input, article textarea {
 }
 
 #trafficTable { }
-#trafficTable td { padding-right: 7px; }
+#trafficTable td, #trafficStatsTable td { padding-right: 7px; }
 #trafficTable .total td, #trafficTable .total th {
   font-weight:bold;
   border-top: 1px solid #ccc;
 }
+#trafficStatsTable th { text-align:right; }
+#trafficStatsTable td { text-align:right; }
 
 #logArea {
   color:#222;
