@@ -1,3 +1,5 @@
+# vim: set et sw=2 ts=2 nowrap:
+
 require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
@@ -86,7 +88,7 @@ end
 
 get '/pings' do
   check_auth(request)
-  @hosts = ['nix.cz', '192.168.100.253', '192.168.102.1']
+  @hosts = @@config['ping_hosts']
   erb :pings
 end
 

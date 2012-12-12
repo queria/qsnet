@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# vim: set et sw=2 ts=2 nowrap:
+
 require 'rubygems'
 require 'yaml'
 require 'mysql'
