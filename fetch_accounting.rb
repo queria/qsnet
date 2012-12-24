@@ -108,16 +108,16 @@ def sorted_ip(hosts_hash)
   }
 end
 
-def store_accounting(db, acc_data)
+def store_accounting(db, acc_data, source_id)
   now = Time.now.strftime('%Y-%m-%dT%H:%M:%S%z') #v novejsim ruby muzem zjednodusit na Time#iso8601
   acc_data.keys.each do |host|
     acc_data[host].keys.each do |remote|
       d = acc_data[host][remote]
       query = 'INSERT INTO accounting ' +
-               '(fetched_at, host, remote, up, down, pckt_up, pckt_down) ' +
+               '(fetched_at, host, remote, up, down, pckt_up, pckt_down, source) ' +
                "VALUES ('#{now}', '#{host}', '#{remote}', " +
                "'#{d['up']}', '#{d['down']}', " +
-               "'#{d['pckt_up']}', #{d['pckt_down']})"
+               "'#{d['pckt_up']}', #{d['pckt_down']}, #{source_id})"
       db.query(query)
     end
   end
@@ -155,8 +155,8 @@ if __FILE__ == $0
   
   acc = AccountingFetcher.new(local_matcher) #, true)
 
-  config['accounting']['sources'].each do |acc_source|
-    store_accounting(db, acc.fetch(acc_source))
+  config['accounting']['sources'].each_with_index do |acc_source, src_idx|
+    store_accounting(db, acc.fetch(acc_source), src_idx + 1)
   end
 
 

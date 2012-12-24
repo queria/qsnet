@@ -1,0 +1,2 @@
+ALTER TABLE accounting ADD COLUMN source INTEGER DEFAULT 0;
+
