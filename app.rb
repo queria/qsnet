@@ -186,7 +186,7 @@ get '/traffic' do
   @traffic = db.query("SELECT host, SUM(up) AS up, SUM(down) AS down," +
     " SUM(pckt_up) AS pckt_up, SUM(pckt_down) AS pckt_down, COUNT(remote) AS remotes" +
     " FROM accounting" +
-    " WHERE fetched_at > '#{interval_start}'" +
+    " WHERE fetched_at > TIMESTAMP('#{interval_start}'" + ')' +
     " GROUP BY host" +
     " ORDER BY #{sort}")
 
@@ -199,18 +199,18 @@ get '/traffic' do
   @traffic.each_hash { |info| @sum.keys.each { |key| @sum[key] += info[key].to_i } } #@sum.keys.each { |key| @sum[key] += info[key] } }
   @traffic.data_seek 0
 
-  G1 = (1024 * 1024 * 1024)
+  g1 = (1024 * 1024 * 1024)
   @stats = {
     'pckt_size_down' => @sum['down'] / @sum['pckt_down'],
     'pckt_size_up' => @sum['up'] / @sum['pckt_down'],
     'pckt_cnt_down' => @sum['pckt_down'] / @traffic.num_rows,
     'pckt_cnt_up' => @sum['pckt_up'] / @traffic.num_rows,
-    'pckt_cnt_1g_down' => G1 / (@sum['down'] / @sum['pckt_down']),
-    'pckt_cnt_1g_up' => G1 / (@sum['up'] / @sum['pckt_up']),
+    'pckt_cnt_1g_down' => g1 / (@sum['down'] / @sum['pckt_down']),
+    'pckt_cnt_1g_up' => g1 / (@sum['up'] / @sum['pckt_up']),
     #'remotes' => @traffic.methods.sort.join(', ')
     'remotes' => @sum['remotes'] / @traffic.num_rows,
-    'remotes_1g_down' => G1 / (@sum['down'] / @sum['remotes']),
-    'remotes_1g_up' => G1 / (@sum['up'] / @sum['remotes'])
+    'remotes_1g_down' => g1 / (@sum['down'] / @sum['remotes']),
+    'remotes_1g_up' => g1 / (@sum['up'] / @sum['remotes'])
   }
   @params = params
   erb :traffic
