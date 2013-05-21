@@ -57,6 +57,10 @@ article {
 article * { color: #dfd; }
 article input, article textarea {
   color: black;
+  background-color: #eee;
+}
+article input.button {
+  background-color: #ccc;
 }
 
 .error {
