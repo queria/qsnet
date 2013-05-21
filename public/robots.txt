@@ -1,0 +1,30 @@
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Yandex
+Disallow: /
+
+User-agent: SeznamBot
+Disallow: /
+
+User-agent: WebCopier
+Disallow: /
+#
+User-agent: WebCopier v4.0
+Disallow: /
+#
+User-agent: Teleport
+Disallow: /
+#
+User-agent: WebZip/4.0
+Disallow: /
+#
+User-agent: WebStripper
+Disallow: /
+#
+User-agent: larbin
+Disallow: /
+
+User-agent: *
+Disallow: /
+
