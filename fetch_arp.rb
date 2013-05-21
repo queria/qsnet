@@ -98,7 +98,7 @@ def store_new_ip_entries(db, last, new)
         "SET seen_at = '#{now}' " +
         "WHERE id = #{last[ip]['id']}"
     end
-    puts query
+    #puts query
     db.query(query)
   end
 end
