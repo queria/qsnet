@@ -6,7 +6,7 @@ Umoznuje:
 * ping preddefinovanych IP adres
 * <em>dohled</em> nad arp tabulkou zarizeni s RouterOS
 * ziskani a vypis informaci o trafficu dle IP Accounting zaznamu z RouterOS
-
+* porovnani ocekavanych plateb s vypisem z uctu
 
 
 == Zprovozneni
@@ -31,6 +31,13 @@ Umoznuje:
    * pro arp radsi casteji (aby nehrozilo "vynechani" zaznamu) (napr. po par minutach)
    * pro accounting je dobre volit mezi nutnosti aktualnich udaju na webu
      proti poctu zaznamu v db (zatez) (tzn jednou tydne, denne ci za hodinu)
+* pro porovnavani ocekavanych plateb s vypisem z uctu:
+  * v config.yaml nadefinujte seznam uctu ze kterych ocekavate platby
+   * u kazdeho uctu je mozne mit vice hodnot plateb s uvedenym poslednim mesicem ve kterem dana hodnota plati (vcetne)
+   * pouze jedna hodnota ocekavane platby smi byt bez 'due_month' hodnoty (posledni mesic platnosti) - a to ta ktera je aktualni
+  * nasledne ve webovem rozhrani provedete upload souboru ziskaneho od banky (format CSV, napr. export prichozich bankovnich transakci)
+   * soubor se neuklada trvale, pouze se zpracuje pro jednorazove zobrazeni, po nacteni dat je soubor odstranen
+   * docasne se soubor vyskytuje v /tmp/ adresari na serveru s QSNet, opravneni nastavene tak ze pristup ma pouze uzivatel pod kterym je QSNet spusteny
 
 === Zprovozneni weboveho rozhrani
 

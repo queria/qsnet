@@ -7,6 +7,7 @@ require 'sinatra/session'
 require 'mysql'
 require 'md5'
 require 'yaml'
+require 'payments'
 
 
 def dbconn
@@ -216,6 +217,29 @@ get '/traffic' do
   erb :traffic
 end
 
+get '/payments' do
+  check_auth(request)
+  erb :payments_form
+end
+
+post '/payments' do
+  check_auth(request)
+  @filename = nil
+  @accounts = nil
+  @payments_by_month = nil
+  if params[:payments_file] and params[:payments_file][:tempfile]
+    parser = Payments::PaymentParser.new(
+      params[:payments_file][:tempfile],
+      @@config)
+    @filename = params[:payments_file][:filename]
+    @accounts = parser.accounts
+    @payments_by_month = parser.payments_by_month.sort
+    params[:payments_file][:tempfile].close
+    params[:payments_file][:tempfile].unlink
+  end
+  erb :payments
+end
+
 get '/status' do
   check_auth(request)
   erb :status
@@ -247,6 +271,12 @@ helpers do
     number /= 1000
     return sprintf("%.2fk", number) if number < 1000
     return sprintf("%.2fmil", number/1000)
+  end
+
+  def formatMoney(amount)
+    return '0' if amount.zero?
+    return '%+.0f' % amount if (amount.modulo(1) * 100).floor.zero?
+    return '%+.2f' % amount
   end
   
   def sortL(text, params, key=nil)

@@ -1,0 +1,33 @@
+<%# vim: set et sw=2 ts=2 nowrap: %>
+
+<%= erb :payments_form %>
+
+<h2>Payments history for file <%= @filename %></h2>
+<% unless @payments_by_month and @accounts %>
+  <div class="error">No file provided!</div>
+<% else %>
+  <table id="paymentsTable">
+    <tr>
+      <th>&nbsp;</th>
+      <% @accounts.each do |acc_number, acc| %>
+        <th title="<%= acc_number %>"><%= acc['name'] %></th>
+      <% end %>
+      <th>Sum</th>
+    </tr>
+    <% @payments_by_month.each do |month,pay| %>
+      <tr>
+        <th><%= month %></th>
+        <% sum = 0 %>
+        <% @accounts.each_key do |acc| %>
+          <% if pay[acc] %>
+            <% sum += pay[acc]['amount'] %>
+            <%= erb :_payment_cell, :locals => { 'payment' => pay[acc] } %>
+          <% else %>
+            <td class="noRecord">&mdash;</td>
+          <% end %>
+        <% end %>
+        <td class="sum"><%= formatMoney(sum) %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

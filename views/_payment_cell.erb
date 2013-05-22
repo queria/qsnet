@@ -1,0 +1,14 @@
+<%# vim: set et sw=2 ts=2 nowrap: %>
+<%
+cls = 'correct'
+if payment['diff'] > 0
+  cls = 'overpaid'
+elsif payment['diff'] < 0
+  cls = 'underpaid'
+end
+ %>
+<td
+  class="<%= cls %>"
+  title="<%= formatMoney(payment['amount']) %> paid from <%= formatMoney(payment['expected']) %>">
+<%= formatMoney(payment['diff']) %>
+</td>

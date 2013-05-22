@@ -1,0 +1,9 @@
+<%# vim: set et sw=2 ts=2 nowrap: %>
+<div id="paymentsForm">
+  <h2>Payments</h2>
+  <h3>Upload CSV file with payments:</h3>
+  <form action="<%= to('/payments') %>" method="post" enctype="multipart/form-data">
+    <span><input type="file" class="file" name="payments_file" /></span>
+    <span><input type="submit" class="button" value="Process file" /></span>
+  </form>
+</div>

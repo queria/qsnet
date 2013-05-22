@@ -62,6 +62,10 @@ article input, article textarea {
 article input.button {
   background-color: #ccc;
 }
+article input.file {
+  color:#999;
+  background-color:black;
+}
 
 .error {
   color:red;
@@ -120,6 +124,16 @@ article input.button {
 }
 #trafficStatsTable th { text-align:right; }
 #trafficStatsTable td { text-align:right; }
+
+#paymentsForm {}
+#paymentsTable {}
+#paymentsTable th { padding:0.5em; }
+#paymentsTable td { padding:0.1em; text-align: center; }
+#paymentsTable .correct { background-color:#393; }
+#paymentsTable .underpaid { background-color:#933; }
+#paymentsTable .overpaid { background-color:#aa3; }
+#paymentsTable .noRecord { background-color:#333; }
+
 
 #logArea {
   color:#222;

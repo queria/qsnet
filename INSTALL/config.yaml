@@ -37,3 +37,18 @@ auth:
   login: test
   pass: testPwd
   
+payments:
+  accounts:
+    - number: 000000-1234567890/1111
+      name: SomeOne
+      amounts:
+        - value: 999
+        - value: 888 # ex.: there was discount on 2012-02-01 <= payment-date < 2012-07-01
+          due_month: 2012-06
+        - value: 999
+          due_month: 2012-01
+    - number: 000000-0987654321/2222
+      name: SomeTwo
+      amounts:
+        - value: 12
+
