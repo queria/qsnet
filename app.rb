@@ -5,9 +5,24 @@ require 'bundler/setup'
 require 'sinatra'
 require 'sinatra/session'
 require 'mysql'
-require 'md5'
 require 'yaml'
-require 'payments'
+
+begin
+  require 'md5'
+rescue LoadError
+  require 'digest/md5'
+  class MD5
+    def md5(text)
+      return Digest::MD5::hexdigest(text)
+    end
+  end
+end
+
+if defined? require_relative
+  require_relative 'payments'
+else
+  require 'payments'
+end
 
 
 def dbconn
