@@ -74,6 +74,8 @@ article input.file {
   font-style:italic;
 }
 
+#pings .error { text-align:left; }
+
 #systemStatus dd {
   white-space:pre;
   font-family: monospace;

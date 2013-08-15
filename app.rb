@@ -104,7 +104,15 @@ end
 
 get '/pings' do
   check_auth(request)
-  @hosts = @@config['ping_hosts']
+  @pings = {}
+  hosts = @@config['ping_hosts']
+  hosts.each do |host|
+    output = `ping -c1 #{host}`
+    @pings[host] = {:output=>output, :ok=>true}
+    if not output[' 0% packet loss']
+      @pings[host][:ok] = false
+    end
+  end
   erb :pings
 end
 
