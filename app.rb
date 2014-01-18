@@ -107,7 +107,14 @@ get '/pings' do
   @pings = {}
   hosts = @@config['ping_hosts']
   hosts.each do |host|
-    output = `ping -c1 #{host}`
+    #host = host.to_s
+    #output = (host.class.to_s + '(' + host + ')')
+    if host['@mtik ']
+        mtik_opts = host[6, host.length]
+        output = `/bin/bash -c "./ping-via-mtik.py #{mtik_opts}"`
+    else
+        output = `ping -c1 #{host}`
+    end
     @pings[host] = {:output=>output, :ok=>true}
     if not output[' 0% packet loss']
       @pings[host][:ok] = false
