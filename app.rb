@@ -224,18 +224,33 @@ get '/traffic' do
   @traffic.data_seek 0
 
   g1 = (1024 * 1024 * 1024)
-  @stats = {
-    'pckt_size_down' => @sum['down'] / @sum['pckt_down'],
-    'pckt_size_up' => @sum['up'] / @sum['pckt_down'],
-    'pckt_cnt_down' => @sum['pckt_down'] / @traffic.num_rows,
-    'pckt_cnt_up' => @sum['pckt_up'] / @traffic.num_rows,
-    'pckt_cnt_1g_down' => g1 / (@sum['down'] / @sum['pckt_down']),
-    'pckt_cnt_1g_up' => g1 / (@sum['up'] / @sum['pckt_up']),
-    #'remotes' => @traffic.methods.sort.join(', ')
-    'remotes' => @sum['remotes'] / @traffic.num_rows,
-    'remotes_1g_down' => g1 / (@sum['down'] / @sum['remotes']),
-    'remotes_1g_up' => g1 / (@sum['up'] / @sum['remotes'])
+  @stats = {'pckt_size_down' => 0, 'pckt_size_up' => 0,
+            'pckt_cnt_1g_down' => 0, 'pckt_cnt_1g_up' => 0,
+            'pckt_cnt_down' => 0, 'pckt_cnt_up' => 0,
+            'remotes_1g_down' => 0, 'remotes_1g_up' => 0
   }
+  if @sum['pckt_down'].nonzero?
+    @stats['pckt_size_down'] = @sum['down'] / @sum['pckt_down']
+    @stats['pckt_size_up'] = @sum['up'] / @sum['pckt_down']
+    @stats['pckt_cnt_1g_down'] = g1 / (@sum['down'] / @sum['pckt_down'])
+  end
+  if @traffic.num_rows.nonzero?
+    @stats['pckt_cnt_down'] = @sum['pckt_down'] / @traffic.num_rows
+    @stats['pckt_cnt_up'] = @sum['pckt_up'] / @traffic.num_rows
+    @stats['remotes'] = @sum['remotes'] / @traffic.num_rows
+  end
+  if @sum['pckt_up'].nonzero? and @sum['up'].nonzero?
+    @stats['pckt_cnt_1g_up'] = g1 / (@sum['up'] / @sum['pckt_up'])
+  end
+  if @sum['remotes'].nonzero?
+    #'remotes' => @traffic.methods.sort.join(', ')
+    if @sum['down'].nonzero?
+      @stats['remotes_1g_down'] = g1 / (@sum['down'] / @sum['remotes'])
+    end
+    if @sum['up'].nonzero?
+      @stats['remotes_1g_up'] = g1 / (@sum['up'] / @sum['remotes'])
+    end
+  end
   @params = params
   erb :traffic
 end
