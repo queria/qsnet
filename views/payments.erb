@@ -14,6 +14,13 @@
       <% end %>
       <th>Sum</th>
     </tr>
+    <tr>
+      <th>Info</th>
+      <% @accounts.each do |acc_number, acc| %>
+        <td><%= acc_number %><br />
+          <%= acc['note'] %></td>
+      <% end %>
+    </tr>
     <% @payments_by_month.each do |month,pay| %>
       <tr>
         <th><%= month %></th>

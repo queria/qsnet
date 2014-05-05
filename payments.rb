@@ -101,7 +101,10 @@ module Payments
     end
 
     def _prepare_account(acc_cfg)
-        acc = {'name'=>acc_cfg['name'], 'amounts'=>[]}
+        acc = {'name'=>acc_cfg['name'], 'note'=>'', 'amounts'=>[]}
+        if acc_cfg['note']:
+          acc['note'] = acc_cfg['note']
+        end
         acc_cfg['amounts'].each { |am_cfg|
           am = {'value'=>am_cfg['value']}
           if am_cfg['due_month']
